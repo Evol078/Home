@@ -1,0 +1,19 @@
+ [
+    {
+        "name": "默认背景",
+        "url": "",
+        "images": [
+            "/image/background/bg4.webp", "/image/background/bg5.webp", "/image/background/bg6.webp"
+            , "/image/background/bg7.webp", "/image/background/bg8.webp", "/image/background/bg9.webp"
+            , "/image/background/bg10.webp"
+        ]
+    }, {
+        "name": "每日一图",
+        "url": "https://api.dujin.org/bing/1920.php",
+        "images": []
+    }, {
+        "name": "随机风景",
+        "url": "https://api.btstu.cn/sjbz/api.php?lx=fengjing&format=images",
+        "images": []
+    }
+]

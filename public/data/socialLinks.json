@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Github",
+        "icon": "/image/icon/github.png",
+        "tip": "去 Github 康康",
+        "url": "https://github.com/Evol078"
+    }, {
+        "name": "BiliBili",
+        "icon": "/image/icon/bilibili.png",
+        "tip": "( °  - °)つロ 干杯 ~",
+        "url": "https://space.bilibili.com/364391286"
+    }, {
+        "name": "QQ",
+        "icon": "/image/icon/qq.png",
+        "tip": "屑站长のQQ（由于tx限制还是先加好友罢2957543478）",
+        "url": "tencent://message/?uin=2957543478&Site=&Menu=yes"
+    }, {
+        "name": "Email",
+        "icon": "/image/icon/email.png",
+        "tip": "来封 Email (喜",
+        "url": "mailto:2957543478@qq.com"
+    }
+]

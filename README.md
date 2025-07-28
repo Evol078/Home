@@ -1,16 +1,7 @@
-## WorstOne
+## Evol017
 
-基于 [**IMSYY**](https://github.com/imsyy) 的个人主页 `HOME` 修改而来。
+基于 [**IMSYY**](https://github.com/imsyy) 与[**Worstone**](https://github.com/first19326)的个人主页 `HOME` 修改而来。
 
-
-![LiveForCode](./public/image/screenshots.png)
-
-
-### Demo
-
->由于 CDN 缓存原因，查看最新效果可能需要 <kbd>Ctrl</kbd> + <kbd>F5</kbd> 强制刷新浏览器缓存
-
-- [WorstOne](https://www.worstone.cn)
 
 ### 功能
 
@@ -137,7 +128,7 @@ VITE_CONSOLE_URL = "/data/console.json"
     "api": "https://api.i-meto.com/meting/api/", 
     "server": "netease",
     "type": "playlist",
-    "id": "2243342814"
+    "id": "1145141919"
 }
 ```
 > <font color="red">*</font> **音乐播放器** 相关配置可以在网站 **全局设置** 页面进行修改
@@ -162,8 +153,8 @@ VITE_CONSOLE_URL = "/data/console.json"
     {
         "name": "Github",
         "icon": "/image/icon/github.png",
-        "tip": "去 Github 看看 !",
-        "url": "https://github.com/first19326"
+        "tip": "去 Github 康康",
+        "url": "https://github.com/"
     }, {
         "name": "BiliBili",
         "icon": "/image/icon/bilibili.png",
@@ -172,13 +163,13 @@ VITE_CONSOLE_URL = "/data/console.json"
     }, {
         "name": "QQ",
         "icon": "/image/icon/qq.png",
-        "tip": "有什么事吗 ?",
-        "url": "https://res.abeim.cn/api/qq/?qq=1400134416"
+        "tip": "屑站长のQQ（由于tx限制还是先加好友罢）",
+        "url": "tencent://message/?uin=&Site=&Menu=yes"
     }, {
         "name": "Email",
         "icon": "/image/icon/email.png",
-        "tip": "来封 Email ~",
-        "url": "mailto:1400134416@qq.com"
+        "tip": "来封 Email (喜",
+        "url": "mailto:@qq.com"
     }
 ]
 ```
@@ -216,7 +207,7 @@ VITE_HITOKOTO_FROM = "WorstOne"
                 {
                     "icon": "Blog",
                     "name": "博客",
-                    "url": "https://notes.worstone.cn/"
+                    "url": ""
                 }, {
                     "icon": "Code",
                     "name": "力扣",
@@ -224,7 +215,7 @@ VITE_HITOKOTO_FROM = "WorstOne"
                 }, {
                     "icon": "Search",
                     "name": "搜索",
-                    "url": "https://kaifa.baidu.com/"
+                    "url": "https://www.bing.com/"
                 }, {
                     "icon": "CompactDisc",
                     "name": "音乐",
@@ -233,18 +224,12 @@ VITE_HITOKOTO_FROM = "WorstOne"
                     "icon": "Cloud",
                     "name": "网盘",
                     "url": "https://www.aliyundrive.com/"
+                },{
+                    "icon": "ExclamationTriangle",
+                    "name": "千万别点",
+                    "method": "prank"
                 }
-            ], [
-                    {
-                    "icon": "Train",
-                    "name": "开往",
-                    "url": "https://www.foreverblog.cn/go.html"
-                }, {
-                    "icon": "Book",
-                    "name": "背单词",
-                    "url": "https://kaiyiwing.gitee.io/qwerty-learner/"
-                }
-            ]
+            ], 
         ]
     }, {
         "icon": "Bars",
@@ -283,7 +268,7 @@ VITE_HITOKOTO_FROM = "WorstOne"
 
 ```vue
 <script setup>
-import { Blog, Code, Search, CompactDisc, Cloud, Train, Book, Link } from "@vicons/fa";
+import { Blog, Code, Search, CompactDisc, Cloud, Train, Book, Link, ExclamationTriangle} from "@vicons/fa";
     
 // 名称与组件集合
 const icons = {
@@ -293,7 +278,8 @@ const icons = {
     "Code": Code,
     "CompactDisc": CompactDisc,
     "Search": Search,
-    "Train": Train
+    "Train": Train,
+    "ExclamationTriangle": ExclamationTriangle
 };
 </script>
 ```
@@ -328,7 +314,8 @@ const methods = {
     "hitokoto": hitokoto,
     "music": musicList,
     "player": musicPlayer,
-    "setting": setting
+    "setting": setting,
+    "prank": prank
 };
 </script>
 ```
@@ -348,8 +335,9 @@ const methods = {
         "name": "默认背景",
         "url": "",
         "images": [
-            "/image/background/home.jpg", "/image/background/home.jpeg", 
-            "/image/background/back.jpg", "/image/background/back.jpeg"
+            "/image/background/bg4.webp", "/image/background/bg5.webp", "/image/background/bg6.webp"
+            , "/image/background/bg7.webp", "/image/background/bg8.webp", "/image/background/bg9.webp"
+            , "/image/background/bg10.webp"
         ]
     }, {
         "name": "每日一图",
@@ -387,39 +375,6 @@ const methods = {
 
 请在 `public/data/` 目录下的 `updateRecords.json` 文件中配置
 
-```json
-{
-    "fix": [
-        "音乐播放器存在的问题",
-        "网站列表中链接点击范围不正确的问题"
-    ],
-    "new": [
-        "静音功能",
-        "网站图标配置",
-        "键盘控制事件",
-        "Swiper 相关配置",
-        "音乐播放器的相关设置",
-        "vue-aplayer.min.js 文件",
-        "动态获取更新日志的数据方式",
-        "当前音乐在音乐列表中置顶显示的效果"
-    ],
-    "delete": [
-        "Safari 浏览器中的默认点击样式"
-    ],
-    "update": [
-        "版权信息逻辑",
-        "网站加载逻辑",
-        "更新日志样式",
-        "更新日志内容种类",
-        "更新日志数据内容",
-        "音乐控制面板样式",
-        "音乐播放器切换音乐方法",
-        "时光胶囊以及设置页面样式",
-        "初始化音乐播放器的代码结构",
-        "打开音乐播放器按钮的显示动画"
-    ]
-}
-```
 </details>
 
 <details>
@@ -435,7 +390,7 @@ const methods = {
 
 ```json
 [
-    ["WorstOne's website LiveForCode", "简单地活着, 肆意而又精彩!"], 
+    ["Evol017", "逸一时误一世"], 
     ["Based on IMSYY's website Home.", "Author IMSYY"]
 ]
 ```
@@ -445,7 +400,7 @@ const methods = {
 
 1. 加载速度的问题
 
-   在本地通过 `pnpm dev` 运行网站的时候，第一次加载会很慢，这是由于 **Vite** 项目的特性，并且本地运行的时候网络协议为 **HTTP/1.1**。如果想要改善网站加载速度慢的问题，可以考虑使用 **CDN** 对站点进行加速，可以参考 [静态网站部署](https://notes.worstone.cn/article/479644713/)。
+   在本地通过 `pnpm dev` 运行网站的时候，第一次加载会很慢，这是由于 **Vite** 项目的特性，并且本地运行的时候网络协议为 **HTTP/1.1**。如果想要改善网站加载速度慢的问题，可以考虑使用 **CDN** 对站点进行加速，可以参考worstone大佬的这篇文章 [静态网站部署](https://notes.worstone.cn/article/479644713/)。
 
 2. 音乐自动播放的问题
 
@@ -469,206 +424,4 @@ const methods = {
 * [每日一句 API](https://m.iciba.com/daily/)
 * [高德开放平台](https://lbs.amap.com/)
 * [Hitokoto 一言](https://hitokoto.cn/)
-
-### 更新日志
-
-- 2024-01-04
-
-  `A` 添加了部分样式，适配各种屏幕尺寸设备
-
-- 2024-01-02
-
-  `F` 修复了 `音乐播放器` 加载失败，但键盘控制事件仍旧生效的问题
-
-  `F` 修复了 `音乐播放器` 音量未能正确设置的问题
-
-  <br/>
-
-  `U` 修改了 **APlayer** 插件加载逻辑，并优化了代码结构
-
-  
-  
-- 2024-01-01
-
-  `U` 修改了 **APlayer** 插件，使用 `@worstone/vue-aplayer` 替换 `vue3-aplayer`，并进行适配
-
-  
-
-- 2023-11-14
-
-  `U` 修改了音乐播放器歌词样式
-  
-  
-  
-- 2023-11-11
-
-  `F` 修复了音乐播放器静音的问题
-
-  <br/>
-  
-  `A` 新增了 `font-display` 属性
-  
-  `U` 修改了音乐播放器静音问题的解决方式
-  
-  
-  
-- 2023-11-10
-
-  `U` 修改了音乐播放器提示文本，并调整了代码结构
-
-  `U` 修改了 logo 区域样式
-
-  
-  
-- 2023-11-05
-
-  `F` 修复了 Safari 浏览器由于动画重复，在关闭 `音乐列表` 时 **屏幕闪烁** 的问题
-
-  `F` 修复了移动端模式下，在 `背景图片展示` 状态，移动端 `菜单按钮` 仍旧显示的问题
-
-  `F` 修复了 720px 宽度时，移动端 `菜单按钮` 不显示的问题
-
-  `F` 修复了 `背景图片展示` 状态，`下载图片` 按钮无法点击的问题
-
-  `F` 修复了 Safari 浏览器 `消息提示` 内容超出容器的问题
-
-  `F` 修复了由 PC 端模式 调整到 移动端模式 后，音乐列表关闭的问题
-
-  <br/>
-
-  `A` 新增了 `加载动画` 组件
-
-  `A` 新增了字体文件
-
-  `A` 新增了部分 `全局变量`
-
-  `A` 新增了部分 `环境变量`
-
-  `A` 新增了自动导入 Vue 相关组件的配置
-
-  `A` 新增了音乐加载失败的方法
-
-  `A` 新增了 `网站列表` 切换功能
-
-  `D` 删除了无用的样式文件
-
-  `U` 修改了网站结构以及样式
-
-  `U` 修改了字体样式文件
-
-  `U` 修改了模块数据结构
-
-  `U` 修改了 `环境变量` 引入方式
-
-  `U` 修改了部分插件版本
-
-  `U` 修改了部分代码，统一编码结构
-
-  `U` 修改了 `背景图片` 加载逻辑
-
-  
-  
-- 2023-07-06
-
-  `A` 新增了关于 `更新日志` 的注释
-
-  `U` 修改了 `更新日志` 内容种类
-
-  `U` 修改了 `更新日志` 数据内容
-
-  
-
-- 2023-07-03
-
-  `F` 修复了 `网站列表` 中链接点击范围不正确的问题
-
-  `F` 修复了音乐播放器存在的问题，修复方式参见 **Q & A**
-
-  <br/>
-
-  `A` 新增了网站图标配置
-
-  `A` 新增了 **vue-aplayer.min.js** 文件
-
-  `A` 新增了音乐播放器的相关设置
-
-  `A` 新增了当前音乐在音乐列表中置顶显示的效果
-
-  `A` 新增了动态获取 `更新日志` 的数据方式
-
-  `A` 新增了静音功能，可以通过点击 `音量图标` 开启
-
-  `A` 新增了 `Swiper` 相关配置，以适配移动端操作
-
-  `A` 新增了键盘控制事件，可以通过 <kbd>Ctrl</kbd> + <kbd>←</kbd> / <kbd>→</kbd> 切换音乐
-
-  `A` 新增了相关样式，去除了 Safari 浏览器中的默认点击样式
-
-  `U` 修改了音乐控制面板样式
-  
-  `U` 修改了初始化音乐播放器的代码结构
-  
-  `U` 修改了音乐播放器切换音乐方法
-  
-  `U` 修改了版权信息逻辑
-  
-  `U` 修改了 `打开音乐播放器` 按钮的显示动画
-  
-  `U` 修改了 `更新日志` 的样式，去掉标题粗体
-  
-  `U` 修改了 `时光胶囊` 以及 `设置` 页面样式，以适配更大屏幕设备
-  
-  `U` 修改了网站加载逻辑，调整了 `欢迎提示` 以及 `默哀模式` 执行时间点
-  
-  
-  
-- 2023-05-12
-
-  `F` 修复了 Safari 浏览器默认背景图片无法显示的问题
-
-  `F` 修复了 Safari 浏览器 `backdrop-filter` 属性不生效的问题
-
-  `F` 修复了默认背景图片无法下载的问题
-
-  `F` 修复了 `网站列表` 中链接点击范围不准确的问题
-
-  `F` 修复了 `720px - 910px` 屏幕尺寸无法打开音乐播放器的问题
-
-  <br/>
-
-  `A` 新增了 `DailySentence` 每日一句
-
-  `A` 新增了触摸滑动切换
-
-  `A` 新增了多种工具方法
-
-  `U` 修改了移动端逻辑，引入触摸滑动插件 `Swiper`
-
-  `U` 修改了网站名称字体，并适配各种屏幕尺寸
-
-  `U` 修改了网站样式，添加最小的宽度以及高度，保证显示效果
-
-  
-  
-- 2023-05-28
-
-  `F` 修复了 Safari 浏览器歌词过长导致样式显示不正确的问题
-
-  `F` 修复了 手机端 Safari 浏览器 `时间卡片` 以及 `一言卡片`  的 `Pagination` 不显示的问题
-
-  <br/>
-
-  `A` 新增了 `256 x 256` 尺寸的图标
-
-  `A` 新增了 `公安备案` 的配置选项以及相关样式
-
-  `U` 修改了 `时间卡片` 以及 `一言卡片` 的位置
-
-  `U` 修改了 `网站列表` 渲染逻辑
-
-  `U` 修改了 `apple-touch-icon` 图标
-
-  `U` 修改了页面底部样式
-  
-  `U` 修改了 **腾讯云** `Serverless` 配置选项，解决了推送修改 `ACL 权限` 的问题
 

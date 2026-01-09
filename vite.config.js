@@ -25,15 +25,23 @@ export default ({ mode }) => defineConfig({
                 clientsClaim: true,
                 runtimeCaching: [{
                     urlPattern: /(.*?)\.(js|css|woff2|woff|ttf)/, // js / css 静态资源缓存
-                    handler: 'CacheFirst',
+                    handler: 'StaleWhileRevalidate',
                     options: {
-                        cacheName: 'js-css-cache'
+                        cacheName: 'js-css-cache',
+                        expiration: {
+                            maxEntries: 100,
+                            maxAgeSeconds: 60 * 5 // 5分钟过期
+                        }
                     }
                 }, {
                     urlPattern: /(.*?)\.(png|jpe?g|svg|gif|bmp|psd|tiff|tga|eps)/, // 图片缓存
                     handler: 'CacheFirst',
                     options: {
-                        cacheName: 'image-cache'
+                        cacheName: 'image-cache',
+                        expiration: {
+                            maxEntries: 100,
+                            maxAgeSeconds: 60 * 60 * 24 // 24小时过期
+                        }
                     }
                 }]
             },

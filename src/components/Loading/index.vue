@@ -118,8 +118,8 @@
             visibility: hidden;
             transform: translateY(-100%);
             transition:
-                transform 0.3s 1s ease-out,
-                visibility 0.3s 1s ease-out;
+                transform 0.3s 0.3s ease-out,
+                visibility 0.3s 0.3s ease-out;
 
             .loader {
                 .loader-circle,

@@ -2,10 +2,10 @@
     <!-- 加载 -->
     <Loading />
     <!-- 背景 -->
-    <Background v-if="!showPrank" @loadComplete="loadComplete" />
+    <Background @loadComplete="loadComplete" />
     <!-- 主界面 -->
     <Transition name="fade" mode="out-in">
-        <main id="main" v-if="store.imageLoadState && !showPrank">
+        <main id="main" v-if="store.imageLoadState">
             <div class="container" v-show="!store.backgroundShow">
                 <section class="main" v-show="!store.setOpenState">
                     <Left />
@@ -27,20 +27,7 @@
             </Transition>
         </main>
     </Transition>
-    <!-- 放在 <template> 最底部，与 <main> 同级 -->
-    <Teleport to="body">
-        <Transition name="fade">
-            <div v-if="showPrank" class="prank-layer">
-                <video
-                autoplay
-                loop
-                src="/data/chunping.mp4"
-                class="prank-video"
-                ></video>
-                <div class="prank-tip">播放完后自动关闭</div>
-            </div>
-        </Transition>
-    </Teleport>
+    <Prank ref="prankPlayer" />
 </template>
 
 <script setup>
@@ -60,18 +47,15 @@
     import MoreSet from "@/views/MoreSet/index.vue";
     import cursorInit from "@/utils/cursor.js";
 
-    import { ref } from 'vue'
+    import { shallowRef, provide } from 'vue';
+    import Prank from '@/components/Prank/index.vue';
+    import { prankKey } from '@/components/Prank/context.js';
 
-    // 开关：true 时隐藏主页、显示全屏层
-    const showPrank = ref(false)
-
-    // 暴露给外部调用
-    window.showPrank = () => {
-        showPrank.value = true
-        setTimeout(() => {
-            showPrank.value = false
-        }, 14360)
-    }
+    const prankPlayer = shallowRef(null);
+    provide(prankKey, {
+        prepare: () => prankPlayer.value?.prepare(),
+        open: () => prankPlayer.value?.open(),
+    });
 
     const store = mainStore();
 

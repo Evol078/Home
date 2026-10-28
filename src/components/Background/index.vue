@@ -1,6 +1,6 @@
 <template>
     <div :class="store.backgroundShow ? 'cover show' : 'cover'">
-        <img class="background" alt="cover" :src="backgroundUrl" v-show="store.imageLoadState" @load="imageLoadComplete" @error.once="imageLoadError" @animationend="imageAnimationEnd" />
+        <img class="background" alt="cover" :src="backgroundUrl" v-show="store.imageLoadState" @load="imageLoadComplete" @error.once="imageLoadError" />
         <div :class="store.backgroundShow ? 'gray hidden' : 'gray'" />
         <Transition name="fade" mode="out-in">
             <a class="down" :href="backgroundUrl" target="_blank" download="" v-show="store.backgroundShow">下载图片</a>
@@ -22,6 +22,14 @@
     let backgroundData = "";
 
     let loadTimeout = null;
+    let ready = false;
+    const revealPage = () => {
+        if (ready) return;
+        ready = true;
+        clearTimeout(loadTimeout);
+        store.setImageLoadState(true);
+        emits("loadComplete");
+    };
 
     const loadBackground = () => {
         // 获取背景图片相关数据
@@ -34,6 +42,8 @@
             })
             .catch((err) => {
                 console.error(err);
+                backgroundUrl.value = "/image/background/bg4.webp";
+                revealPage();
                 ElMessage({
                     message: "背景图片相关数据获取失败",
                     grouping: true,
@@ -59,21 +69,12 @@
     };
 
     // 背景图片加载完成
-    const imageLoadComplete = () => {
-        loadTimeout = setTimeout(() => {
-            store.setImageLoadState(true);
-        }, Math.floor(Math.random() * (600 - 300 + 1)) + 300);
-    };
-
-    // 背景图片动画结束
-    const imageAnimationEnd = () => {
-        console.log("背景图片加载完成");
-        emits("loadComplete");
-    };
+    const imageLoadComplete = revealPage;
 
     // 背景图片加载失败
     const imageLoadError = () => {
-        console.error("背景图片加载失败:", backgroundData[store.coverType].name);
+        console.error("背景图片加载失败");
+        revealPage();
         
         // 切换默认背景图片
         let index = 0;
@@ -95,7 +96,8 @@
     };
 
     onMounted(() => {
-        // 加载背景图片
+        // 背景或接口再慢也不无限阻塞主界面。
+        loadTimeout = setTimeout(revealPage, 4000);
         loadBackground();
     });
 

@@ -77,31 +77,51 @@
     const prankPlayer = inject(prankKey);
     let prankPending = false;
 
-    const prank = async () => {
+    let prankClickCount = ref(0);
+
+    const prank = () => {
         if (prankPending) return;
         prankPending = true;
-        // 阅读警告时提前缓冲，且复用同一个 video 元素。
         prankPlayer.prepare();
-        try {
-            await ElMessageBox.confirm(
-                '接下来的视频包含突然的声音和闪烁画面，可能造成惊吓或不适。对闪光敏感或有癫痫病史的访客请勿继续。是否播放？',
-                '警告',
-                {
-                    confirmButtonText: '继续播放',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                    customClass: 'prank-message-box',
-                    closeOnClickModal: false,
-                    closeOnPressEscape: true,
-                }
-            );
-            prankPlayer.open();
-        } catch {
-            // 取消后再次进入仍显示完整警告和取消按钮。
-        } finally {
-            prankPending = false;
+        prankClickCount.value++;
+        let message = '当暴露在点击确定后的场景时，有极小部分人群会引发癲痫。这种情形可能是由于某些未查出的癫病症状引起，即使该人员并没有患癫痫病史也有可能造成此类病症。如果您的家人或任何家庭成员曾有过类似症状，请在点击确定前咨询您的医生或医师。如果您在稍后出现任何症状，包括头晕、目眩、眼部或肌肉抽搐、失去意识、失去方向感、抽搐或出现任何自己无法控制的动作，请立即关闭本站并咨询您的医生或医师。这是最后的警告，是否继续操作?';
+        let confirmButtonText = '继续';
+        let cancelButtonText = '取消';
+        let type = 'warning';
+        let showCancelButton = true;
+
+        if (prankClickCount.value > 1) {
+            message = '站长不会承担由于点击“千万别点”造成的任何后果（恼。这是最后的警告，是否继续操作？';
+            confirmButtonText = '确认';
+            type = 'error';
+            showCancelButton = false;
         }
+
+        ElMessageBox.confirm(
+            message,
+            '警告',
+            {
+                confirmButtonText,
+                cancelButtonText,
+                type,
+                customClass: 'prank-message-box', // 添加自定义类名
+                showCancelButton, // 控制是否显示取消按钮
+                showClose: false,         // 1. 隐藏右上角 ×
+                closeOnClickModal: false, // 2. 禁止点击遮罩关闭
+                closeOnPressEscape: false // 3. 禁止按 ESC 关闭
+            }
+        ).then(() => {
+            // 1. 跳转到恶搞页面
+            prankPlayer.open();
+            // 2. 回到主页后重新计数
+            prankClickCount.value = 0;
+        }).catch(() => {
+            // 用户取消操作，保留次数供下次点击使用
+        }).finally(() => {
+            prankPending = false;
+        });
     };
+
 
     // 方法名称与方法集合
     const methods = {

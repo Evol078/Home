@@ -1,5 +1,5 @@
 <script setup>
-import { shallowRef, onBeforeUnmount, onMounted } from 'vue';
+import { shallowRef, onBeforeUnmount } from 'vue';
 
 const video = shallowRef(null);
 const visible = shallowRef(false);
@@ -40,15 +40,7 @@ function retry() {
     play();
 }
 
-function onKeydown(event) {
-    if (event.key === 'Escape' && visible.value) close();
-}
-
-onMounted(() => window.addEventListener('keydown', onKeydown));
-onBeforeUnmount(() => {
-    close();
-    window.removeEventListener('keydown', onKeydown);
-});
+onBeforeUnmount(close);
 defineExpose({ prepare, open });
 </script>
 
@@ -58,7 +50,6 @@ defineExpose({ prepare, open });
             <video ref="video" :src="source" preload="auto" playsinline class="prank-video"
                 @ended="close" @playing="status = 'playing'" @waiting="status = 'loading'"
                 @error="status = 'error'" />
-            <button class="prank-close" type="button" @click="close">关闭 (Esc)</button>
             <div class="prank-tip" aria-live="polite">
                 <template v-if="status === 'loading'">视频加载中，请稍候…</template>
                 <button v-else-if="status === 'blocked'" type="button" @click="play">点击播放视频</button>
@@ -70,6 +61,5 @@ defineExpose({ prepare, open });
 </template>
 
 <style scoped>
-.prank-close { position: absolute; top: 20px; right: 20px; }
 button { cursor: pointer; padding: 8px 16px; border-radius: 6px; border: 1px solid #aaa; background: #222; color: #fff; }
 </style>

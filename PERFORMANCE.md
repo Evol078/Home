@@ -28,6 +28,6 @@ CNAME 正常解析到 Vercel。阿里云购买域名不意味着内容在阿里�
 
 参考：[Vercel 静态 CDN 缓存](https://vercel.com/docs/caching/cdn-cache)、[缓存头](https://vercel.com/docs/caching/cache-control-headers)、[浏览器媒体预加载](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/preload)。
 
-## 自动更新日志
+## 人工维护更新日志
 
-执行 npm run build / pnpm build 时，在 Vite 构建完成后由 scripts/generate-update-records.mjs 读取最近最多 30 条 Git 提交，写入 dist/data/updateRecords.json，不修改手动源文件。版本优先采用当前提交上的版本标签，否则显示 package.json 版本+提交号；提交上的标签同时显示在日志条目中。不会自动递增语义版本；发布版本时需要更新 package.json 或创建 v1.1.0 等版本标签。构建环境若只有浅克隆历史，仅显示可读取的提交；没有 Git 时回退手动日志。开发模式仍使用手动源文件，生产构建可预览自动日志。
+更新日志在 public/data/updateRecords.json 中维护，按 fix（修复）、new（新增）、delete（移除）、update（更新）分类填写面向访客的内容。构建直接复制该文件，不读取 Git 提交，也不会覆盖人工编辑。页面版本由 package.json 的 version 字段维护。修改后提交并推送 main，随 Vercel 部署生效。

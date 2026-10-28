@@ -9,7 +9,7 @@
                     <span class="site-name">{{ siteName }}</span>
                 </div>
                 <div class="version">
-                    <div class="num">Version&nbsp;{{ config.version }}</div>
+                    <div class="num">Version&nbsp;{{ displayVersion }}</div>
                     <el-tooltip content="Github 源代码仓库" placement="right" :show-arrow="false">
                         <GithubOne class="github" theme="outline" size="24" @click="jumpTo(config.github)" />
                     </el-tooltip>
@@ -54,6 +54,7 @@
     import Set from "@/components/Set/index.vue";
     import config from "@/../package.json";
     const store = mainStore();
+    const displayVersion = ref(config.version);
 
     let closeShow = ref(false);
 
@@ -71,6 +72,7 @@
     const loadUpdateRecordsData = () => {
         loadData(import.meta.env.VITE_RECORDS_URL)
             .then((res) => {
+                displayVersion.value = res.version || config.version;
                 updateRecords.fix = res.fix;
                 updateRecords.new = res.new;
                 updateRecords.delete = res.delete;

@@ -284,31 +284,48 @@ body .prank-message-box {
   100% { transform: translateX(0); }
 }
 
+// 播放层覆盖整个网页视口；竖屏裁剪两侧以放大中心画面。
 .prank-layer {
   position: fixed;
   inset: 0;
-  z-index: 9999;                 /* 置顶 */
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  background: #000;
 }
 
 .prank-layer .prank-video {
-  max-width: 80vw;
-  max-height: 80vh;
-  width: auto;
-  height: auto;
-  border-radius: 8px;
-  object-fit: contain;           /* 保持比例 */
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center;
+
+  @media (orientation: portrait) {
+    object-fit: cover;
+  }
 }
 
 .prank-tip {
   position: absolute;
-  bottom: 8%;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  padding: 0 16px;
   color: #fff;
-  font-size: 18px;
-  text-shadow: 0 0 4px #000;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px #000;
+  pointer-events: none;
+
+  button {
+    min-height: 44px;
+    pointer-events: auto;
+  }
 }

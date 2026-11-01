@@ -284,7 +284,7 @@ body .prank-message-box {
   100% { transform: translateX(0); }
 }
 
-// 播放层覆盖整个网页视口；竖屏裁剪两侧以放大中心画面。
+// 播放层覆盖视口，视频保留边距并完整显示。
 .prank-layer {
   position: fixed;
   inset: 0;
@@ -298,16 +298,16 @@ body .prank-message-box {
 
 .prank-layer .prank-video {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 92%;
+  height: 84%;
   max-width: none;
   max-height: none;
   border-radius: 0;
   object-fit: contain;
   object-position: center;
 
-  @media (orientation: portrait) {
-    object-fit: cover;
+  @media (max-width: 720px) {
+    width: 96%;
   }
 }
 

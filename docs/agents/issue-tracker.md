@@ -1,30 +1,40 @@
-# Issue tracker: Local Markdown
+# Issue tracker: GitHub
 
-Issues and specs for this repo live as markdown files in `.scratch/`.
+Issues and specs live in Evol078/Home GitHub Issues. Use the gh CLI from this repository.
 
 ## Conventions
 
-- One feature per directory: `.scratch/<feature-slug>/`
-- The spec is `.scratch/<feature-slug>/spec.md`
-- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, never a single combined tickets file
-- Triage state is recorded as a `Status:` line near the top of each issue file (see `triage-labels.md` for the role strings)
-- Comments and conversation history append to the bottom of the file under a `## Comments` heading
+- Before creating an issue, verify the target with `gh repo view --json nameWithOwner`.
+- Create: `gh issue create --repo Evol078/Home --title "..." --body-file <file>`.
+- Read: `gh issue view <number> --repo Evol078/Home --json number,title,body,labels,comments`.
+- List: `gh issue list --repo Evol078/Home --state open --json number,title,body,labels`.
+- Comment: `gh issue comment <number> --repo Evol078/Home --body-file <file>`.
+- Labels: `gh issue edit <number> --repo Evol078/Home --add-label "..."` or `--remove-label "..."`.
+- Close: comment with the outcome, then `gh issue close <number> --repo Evol078/Home`.
+- Sub-issues: use GitHub native sub-issues when supported. Otherwise put `Part of #<parent>` in the child and a task list in the parent.
+- Blocking: use GitHub native issue dependencies when supported. Otherwise put `Blocked by: #<number>` in the issue body. Work starts after every blocker closes.
+- Existing `.scratch/` tickets remain historical records; new tickets go to GitHub.
+
+## Pull requests as a triage surface
+
+**PRs as a request surface: no.**
 
 ## When a skill says "publish to the issue tracker"
 
-Create a new file under `.scratch/<feature-slug>/` (creating the directory if needed).
+Create a GitHub issue in Evol078/Home.
 
 ## When a skill says "fetch the relevant ticket"
 
-Read the file at the referenced path. The user will normally pass the path or the issue number directly.
+Read the GitHub issue, including its comments and labels.
 
 ## Wayfinding operations
 
-Used by `/wayfinder`. The **map** is a file with one **child** file per ticket.
+- Map: a GitHub issue labelled `wayfinder:map`, containing Notes, Decisions-so-far and Fog.
+- Child: a sub-issue labelled `wayfinder:<type>` (research, prototype, grilling, task). Use a parent task list when native sub-issues are unavailable.
+- Frontier: open children, in map order, with no assignee and no open blockers.
+- Claim: assign the issue to the driving developer before working.
+- Resolve: comment with the answer, close the child, then update Decisions-so-far on the map.
 
-- **Map**: `.scratch/<effort>/map.md` (the Notes / Decisions-so-far / Fog body).
-- **Child ticket**: `.scratch/<effort>/issues/NN-<slug>.md`, numbered from `01`, with the question in the body. A `Type:` line records the ticket type (`research`/`prototype`/`grilling`/`task`); a `Status:` line records `claimed`/`resolved`.
-- **Blocking**: a `Blocked by: NN, NN` line near the top. A ticket is unblocked when every file it lists is `resolved`.
-- **Frontier**: scan `.scratch/<effort>/issues/` for files that are open, unblocked, and unclaimed; first by number wins.
-- **Claim**: set `Status: claimed` and save before any work.
-- **Resolve**: append the answer under an `## Answer` heading, set `Status: resolved`, then append a context pointer (gist + link) to the map's Decisions-so-far in `map.md`.
+## CLI availability
+
+If gh is unavailable, use the official GitHub REST API with the existing Git credential manager, as approved for this repository. Keep credentials in process memory and omit them from logs. Verify the repository full_name before writes. Use the corresponding repository issues, labels and issue-dependency endpoints.

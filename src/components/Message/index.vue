@@ -3,7 +3,7 @@
     <div class="message">
         <!-- Logo -->
         <div class="logo">
-            <img class="logo-image" :src="siteLogo" alt="logo" />
+            <img class="logo-image" :src="siteLogo" alt="logo" width="120" height="120" fetchpriority="high" decoding="async" />
             <div class="name text-hidden">
                 <span class="site-name">{{ siteAuthor }}</span>
             </div>
@@ -33,10 +33,12 @@
     import { mainStore } from "@/store";
     import { getDailySentence } from "@/api";
     import { getNowFormatDate } from "@/utils/tools.js";
+    import optimizedAvatar from '@/assets/avatar.webp';
     const store = mainStore();
 
     // 站点logo
-    let siteLogo = import.meta.env.VITE_SITE_LOGO;
+    const configuredLogo = import.meta.env.VITE_SITE_LOGO;
+    const siteLogo = configuredLogo === '/image/icon/avatar.png' ? optimizedAvatar : configuredLogo;
     // 站点名称
     let siteAuthor = import.meta.env.VITE_SITE_AUTHOR;
 
@@ -138,6 +140,8 @@
 
             .logo-image {
                 width: 120px;
+                height: auto;
+                aspect-ratio: auto 1;
                 border-radius: 50%;
 
                 @media (max-width: 768px) {

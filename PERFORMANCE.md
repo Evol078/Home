@@ -1,5 +1,38 @@
 # 性能排查与修改（2026-10-28）
 
+## 头像与字体优化（2026-11-02）
+
+本轮以远端 main 的 `04c5b01` 为基础，在 `codex/homepage-asset-loading` 分支修改。未带入本地旧的“隐藏警告图标”提交。尚未部署线上。
+
+线上首次浏览器采样确认：头像为 876×876 的 PNG，667,666 字节，在页面脚本运行、背景放行后才发现；Long Cang 一次下载完整 5,162,508 字节 TTF；HarmonyOS 字体从 B 站域名按 Unicode 分片请求，绕过本站 CDN。该次响应同时有 EdgeOne 和 Vercel 响应头，HTML 的 EdgeOne 状态为 MISS；这不能推断所有静态资源都未命中。
+
+| 资源 | 修改前 | 修改后 |
+| --- | ---: | ---: |
+| 头像 | 667,666 B PNG | 11,530 B、240×240 WebP |
+| Long Cang 常用字 | 5,162,508 B 完整 TTF | 197,032 B WOFF2 |
+| Playball | 42,820 B TTF | 16,820 B WOFF2 |
+| favicon | 488,269 B ICO | 9,644 B ICO |
+| HarmonyOS | 54 个站外分片 | 同内容、同分片，改为本站带内容哈希的资源 |
+
+头像和标题字体从 HTML preload 提前请求；头像组件使用同一构建 URL，实测只下载一次。原头像、原字体仍保留为生成输入，自定义 `VITE_SITE_LOGO`、站点图标路径继续生效。所有字体使用 `font-display: swap`。
+
+Long Cang 保留全部 7,015 个 Unicode 字符：617 个站内常用字符放入一个字集，其余分为每组至多 64 字的 100 个互不重叠字集。未知的每日一句按需补充字体，不会强行限于固定文案。测试字符“丐龟”触发 2 个补充请求，合计 29,944 字节。
+
+字体、头像和图标经 Vite 生成带内容哈希的 `/assets/` URL，沿用项目已有的一年 immutable 缓存响应头。PWA 为版本化字体使用 CacheFirst，WebP/AVIF 加入图片缓存；字体文件没有加入全量预缓存，不会为了安装 PWA 提前拉取完整字库。没有修改 CDN 控制台、DNS 或服务器配置。
+
+验证：`npm run build` 成功，`git diff --check` 通过；原有 Sass/Browserslist 弃用提示仍存在。`pnpm build` 在本机包装器的依赖检查中失败，原因是 pnpm 的依赖构建批准检查，改用已有 node_modules 执行同一个 npm build 脚本完成验证，未修改项目 pnpm 工作区配置。
+
+启动 `npm run preview -- --host 127.0.0.1 --port 4173` 后，执行：
+
+```powershell
+npx --yes --package @playwright/cli playwright-cli run-code --filename scripts/check-loading.pw.js
+npx --yes --package @playwright/cli playwright-cli run-code --filename scripts/check-font-cache.pw.js
+```
+
+首次访问测试禁用 Service Worker，并固定每日一句，避免日期和外部接口影响资源预算。结果：头像 11,530 字节、仅下载一次；字体 24 个请求、合计 555,340 字节；站外字体和 TTF 请求均为 0；无脚本异常、无 assets 404。头像在约 38 ms 发起、主脚本约 138 ms 完成；仅用于证明启动顺序，不代表线上提速倍数。缓存测试在 Service Worker 接管后离线读取字体成功。桌面及 390×844 手机截图存放于忽略的 `output/playwright/`。
+
+生成脚本为 `scripts/prepare-site-assets.py`，仅重新生成资源时需要 Pillow 和 `fonttools[woff]`，部署构建无需 Python。字体来源和授权文本见 `src/assets/fonts/README.md` 与 `public/font-licenses/`。
+
 项目是 Vue 3 + Vite 的静态主页，使用 Pinia、Element Plus、Swiper 和 PWA。配置数据来自 public/data；没有需要服务器计算的视频接口。
 
 ## 线上测量

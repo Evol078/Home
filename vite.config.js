@@ -6,10 +6,12 @@ import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import viteCompression from "vite-plugin-compression";
+import { criticalAssets } from "./scripts/critical-assets.mjs";
 
 // https://vitejs.dev/config/
 export default ({ mode }) => defineConfig({
     plugins: [
+        criticalAssets(mode),
         vue(),
         AutoImport({
             imports: ["vue"],
@@ -24,6 +26,16 @@ export default ({ mode }) => defineConfig({
                 skipWaiting: true,
                 clientsClaim: true,
                 runtimeCaching: [{
+                    urlPattern: ({ url, sameOrigin }) => sameOrigin && /^\/assets\/.*\.woff2$/.test(url.pathname),
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'versioned-font-cache',
+                        expiration: {
+                            maxEntries: 200,
+                            maxAgeSeconds: 60 * 60 * 24 * 365
+                        }
+                    }
+                }, {
                     urlPattern: /(.*?)\.(js|css|woff2|woff|ttf)/, // js / css 静态资源缓存
                     handler: 'StaleWhileRevalidate',
                     options: {
@@ -34,7 +46,7 @@ export default ({ mode }) => defineConfig({
                         }
                     }
                 }, {
-                    urlPattern: /(.*?)\.(png|jpe?g|svg|gif|bmp|psd|tiff|tga|eps)/, // 图片缓存
+                    urlPattern: /(.*?)\.(png|jpe?g|webp|avif|svg|gif|bmp|psd|tiff|tga|eps)(\?|$)/, // 图片缓存
                     handler: 'CacheFirst',
                     options: {
                         cacheName: 'image-cache',

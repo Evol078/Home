@@ -410,6 +410,8 @@ const methods = {
 
 ### 技术栈
 
+本站使用 HarmonyOS Sans、Playball、Long Cang 和 UnidreamLED 字体。字体来源与处理方式见 [字体说明](src/assets/fonts/README.md)，随站点发布的授权文本见 [public/font-licenses/](public/font-licenses/)。
+
 * [Vue](https://cn.vuejs.org/)
 * [Vite](https://vitejs.cn/vite3-cn/)
 * [Pinia](https://pinia.vuejs.org/zh/)

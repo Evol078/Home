@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import '@/style/fonts.css';
 import '@/style/style.scss';
 import App from '@/App.vue';
 // 引入 pinia
